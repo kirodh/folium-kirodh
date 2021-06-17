@@ -470,6 +470,16 @@ def get_obj_in_upper_tree(element, cls):
 
 def parse_options(**kwargs):
     """Return a dict with lower-camelcase keys and non-None values.."""
-    return {camelize(key): value
+    # changes by Kirodh:
+    kwargs_all = {camelize(key): value
             for key, value in kwargs.items()
             if value is not None}
+
+    # modification for CQL_FILTER argument from geoserver:
+    try:
+        kwargs_all["CQL_FILTER"] = kwargs_all["CQLFilter"]
+        del kwargs_all["CQLFilter"]
+    except Exception as e:
+        None
+
+    return kwargs_all
